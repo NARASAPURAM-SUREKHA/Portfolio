@@ -1,0 +1,14 @@
+import { useState } from 'react';
+import { ArrowUpRight, Github, ExternalLink, Layers, X, CheckCircle2 } from 'lucide-react';
+export default function ProjectCard({ project }) {
+  const [expanded, setExpanded] = useState(false);
+  return <article className="project-card">
+    <div className={`project-art art-${project.id}`} aria-hidden="true"><div className="art-window"><div className="art-top"><i/><i/><i/></div><div className="art-lines"><span/><span/><span/><span/></div><div className="art-orbit"><Layers size={34}/></div></div><span className="art-index">{String(project.id.length).padStart(2,'0')}</span></div>
+    <div className="project-content"><div className="project-meta"><span className="category-label">{project.category}</span>{project.featured && <span className="featured-label">Featured</span>}</div>
+      <h3>{project.title}</h3><p className="project-summary">{project.summary}</p>
+      <div className="tag-list">{project.technologies.map(tech => <span className="tag" key={tech}>{tech}</span>)}</div>
+      <div className="project-actions"><button className="text-action" onClick={() => setExpanded(true)}>Case study <ArrowUpRight size={16}/></button>{project.repo && <a className="icon-link" href={project.repo} target="_blank" rel="noreferrer" aria-label={`${project.title} GitHub repository`}><Github size={17}/></a>}{project.demo && <a className="icon-link" href={project.demo} target="_blank" rel="noreferrer" aria-label={`${project.title} live demo`}><ExternalLink size={17}/></a>}</div>
+    </div>
+    {expanded && <div className="modal-backdrop" role="presentation" onMouseDown={e => { if(e.target === e.currentTarget) setExpanded(false); }}><section className="project-modal" role="dialog" aria-modal="true" aria-labelledby={`modal-${project.id}`}><button className="icon-button modal-close" onClick={() => setExpanded(false)} aria-label="Close project details"><X/></button><p className="eyebrow">{project.category} · {project.status}</p><h3 id={`modal-${project.id}`}>{project.title}</h3><p>{project.summary}</p><h4>The problem</h4><p>{project.problem}</p><h4>Approach</h4><p>{project.solution}</p><h4>Key features</h4><ul className="feature-list">{project.features.map(item => <li key={item}><CheckCircle2 size={16}/>{item}</li>)}</ul><p className="modal-contribution"><b>Contribution:</b> {project.contribution}</p><div className="tag-list">{project.technologies.map(tech => <span className="tag" key={tech}>{tech}</span>)}</div><div className="project-actions modal-actions">{project.repo ? <a className="button button-primary" href={project.repo} target="_blank" rel="noreferrer"><Github size={16}/> View repository</a> : <span className="muted-note">Repository link not added yet.</span>}{project.demo && <a className="button button-outline" href={project.demo} target="_blank" rel="noreferrer">Live demo <ExternalLink size={15}/></a>}</div></section></div>}
+  </article>;
+}
